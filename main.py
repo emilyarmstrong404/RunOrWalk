@@ -26,7 +26,6 @@ def compute_gradient(x, y, w, b):
     m = x.shape[0]
     dj_dw = 0
     dj_db = 0
-    i = 0
     for i in range(m):
         prediction = w * x[i] + b
         dj_db += prediction - y[i]
@@ -34,3 +33,15 @@ def compute_gradient(x, y, w, b):
     dj_db = dj_db / m
     dj_dw = dj_dw / m
     return dj_dw, dj_db
+
+def gradient_descent(x, y, w_in, b_in, gradient_function, alpha, num_iters):
+    w = w_in
+    b = b_in
+
+    for i in range(num_iters):
+        dj_dw, dj_db = gradient_function(x, y, w, b)
+
+        w = w - alpha * dj_dw
+        b = b - alpha * dj_db
+
+    return w, b
