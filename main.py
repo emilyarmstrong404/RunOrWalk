@@ -41,7 +41,7 @@ def gradient_descent(x, y, w_in, b_in, gradient_function, alpha, num_iters):
         w = w - alpha * dj_dw
         b = b - alpha * dj_db
 
-        if i % 100 == 0: 
+        if i % 100 == 0:
             cost = compute_cost(x, y, w, b)
             print(f"Iteration {i}, Cost: {cost}")
 
