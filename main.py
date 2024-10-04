@@ -49,3 +49,21 @@ def gradient_descent(x, y, w_in, b_in, gradient_function, alpha, num_iters):
 
 w,b = gradient_descent(X ,Y, w_init, b_init, compute_gradient, learning_rate, iterations)
 print("w,b found by gradient descent, w: ", w, "b ", b)
+
+m = X.shape[0]
+accuracy_counter = 0
+for i in range(m):
+    if np.dot(X.iloc[i], w + b) < 0.5:
+        walk_or_run = "walk"
+    else:
+        walk_or_run = "run"
+
+    if int(Y.iloc[i]) < 0.5:
+        target_walk_or_run = "walk"
+    else:
+        target_walk_or_run = "run"
+    print(f"prediction: {np.dot(X.iloc[i], w + b):0.2f}, target value: {Y.iloc[i]}, prediction: {walk_or_run}, target: {target_walk_or_run}" )
+    if walk_or_run == target_walk_or_run:
+        accuracy_counter += 1
+print("Accuracy: ", accuracy_counter/m)
+
