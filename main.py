@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+from sklearn.preprocessing import StandardScaler
+s = StandardScaler()
 
 df = pd.read_csv('dataset.csv')
 
@@ -9,10 +11,13 @@ df["activity"] = df["activity"].astype(np.float32)
 X = df[["acceleration_x","acceleration_y","acceleration_z","gyro_x","gyro_y","gyro_z"]]
 Y = df[["activity"]]
 
+X = s.fit_transform(X)
+X = pd.DataFrame(X)
+
 b_init = 0
 w_init = np.zeros(6)
-iterations = 1000
-learning_rate = 0.001
+iterations = 3000
+learning_rate = 0.01
 
 def compute_cost(x, y, w, b):
     m = x.shape[0]
@@ -66,4 +71,3 @@ for i in range(m):
     if walk_or_run == target_walk_or_run:
         accuracy_counter += 1
 print("Accuracy: ", accuracy_counter/m)
-
