@@ -2,18 +2,35 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 s = StandardScaler()
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+rfc=RandomForestClassifier()
+from sklearn.metrics import confusion_matrix,accuracy_score,classification_report
 
 df = pd.read_csv('dataset.csv')
+
+df.drop(columns=['date', 'time', 'username', 'wrist'], inplace=True)
 
 df[["acceleration_x","acceleration_y","acceleration_z","gyro_x","gyro_y","gyro_z"]] = df[["acceleration_x","acceleration_y","acceleration_z","gyro_x","gyro_y","gyro_z"]].astype(np.float32)
 df["activity"] = df["activity"].astype(np.float32)
 
 X = df[["acceleration_x","acceleration_y","acceleration_z","gyro_x","gyro_y","gyro_z"]]
-Y = df[["activity"]]
+Y = df[["activity"]].values.flatten()
 
 X = s.fit_transform(X)
 X = pd.DataFrame(X)
 
+X_train, X_test,Y_train, Y_test = train_test_split(X,Y,test_size=0.25,random_state=10)
+
+rfc.fit(X_train,Y_train)
+Y_pred = rfc.predict(X_test)
+
+print(confusion_matrix(y_pred=Y_pred,y_true=Y_test))
+print(accuracy_score(y_pred=Y_pred,y_true=Y_test))
+print(classification_report(y_pred=Y_pred,y_true=Y_test))
+
+
+'''
 b_init = 0
 w_init = np.zeros(6)
 iterations = 3000
@@ -71,3 +88,4 @@ for i in range(m):
     if walk_or_run == target_walk_or_run:
         accuracy_counter += 1
 print("Accuracy: ", accuracy_counter/m)
+'''
